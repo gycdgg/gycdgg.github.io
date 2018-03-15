@@ -4,7 +4,7 @@ I have faced a issue that once i change a computer, the source code was on my pr
 so i create two branth.
 ____
 **hexo: for source code of my blog**
-
+git
 **master: also the default branch for deploy my blog**
 _____
 
