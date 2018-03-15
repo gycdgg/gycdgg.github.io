@@ -65,4 +65,40 @@ Event对象成员
   })
 ```
 IE的event对象同样也包含于创建他的事件相关的属性和方法。
-cancelBubble
+
+|属性/方法| 类型 | 读/写 | 说明 |
+| :-: | :-: | :-: |  :-: |
+| cancelBubble | Boolean| 读/写 | default value 为 false，当设置为true时等同于DOM中的stopPropagation()|
+|returnValue| boolean | 读/写 | default value 为 true，当设置为false时等同于DOM中的preventDefault|
+|srcElement | Element | 只读 | 与DOM事件中的target相同|
+|type | boolean | 只读 | 被触发的事件类型|
+
+#### 跨浏览器的事件对象
+虽然DOM和IE的event对象不同，但是基于他们之间的相似性依然可以拿出跨浏览器的方案来。
+```js
+let untilEvent = {
+  getEvent: function (event) {
+     return event || window.event
+  },
+  getTarget: function (event) {
+    return event.target || event.srcElement
+  },
+  stopProparation: function(event){
+    if(event.stopPropagation) {
+      event.stopPropagation()
+    } else {
+      event.cancelBubble = true
+    }
+  },
+  preventDefault: function(event){
+    if (event.preventDefault)
+    {
+      event.preventDefault()
+    } else {
+      event.returnValue = false
+    }
+  }
+}
+```
+#### 时间代理
+// 明天继续写吧
