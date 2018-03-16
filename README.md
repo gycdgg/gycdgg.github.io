@@ -8,7 +8,7 @@ git
 **master: also the default branch for deploy my blog**
 _____
 
-### how to deploy 
+### how to deploy
 
 1. git clone https://github.com/gycdgg/gycdgg.github.io.git
 2. git checkout hexo  // **switch to hexo branch**
@@ -16,7 +16,7 @@ _____
 4. npm run dev        // write your blog locally,hot load supported, server listening at localhost:4000
 5. npm run deploy     // deploy your blog.
 
->For the step 5, you should so some preparation.
+>For the step 5, you should do some preparation.
 change the git repo to your own repository.
 ```yml
 

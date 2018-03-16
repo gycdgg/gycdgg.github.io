@@ -1,6 +1,6 @@
 ---
 title: Js事件机制（下）
-date: 2018-03-13 15:13:12
+date: 2018-03-14 15:13:12
 tags: Javascript事件
 category: JavaScript
 ---
@@ -76,29 +76,100 @@ IE的event对象同样也包含于创建他的事件相关的属性和方法。
 #### 跨浏览器的事件对象
 虽然DOM和IE的event对象不同，但是基于他们之间的相似性依然可以拿出跨浏览器的方案来。
 ```js
-let untilEvent = {
+let eventUtil = {
+  addHandler: function(element,type,handler) {
+    if (element.addEventListener) {
+      element.addEventListener(type,handler,false)
+    } else if(event.attachEvent) {
+      element.attachEvent("on" + type, handler)
+    } else {
+      element["on" + type] = handler
+    }
+  },
   getEvent: function (event) {
      return event || window.event
   },
   getTarget: function (event) {
     return event.target || event.srcElement
   },
-  stopProparation: function(event){
+  stopProparation: function (event) {
     if(event.stopPropagation) {
       event.stopPropagation()
     } else {
       event.cancelBubble = true
     }
   },
-  preventDefault: function(event){
+  preventDefault: function (event) {
     if (event.preventDefault)
     {
       event.preventDefault()
     } else {
       event.returnValue = false
     }
+  },
+  removeHandle: function (event) {
+    if (element.removeEventListener) {
+      element.removeEventListener(type,handler,false)
+    } else if(event.detachEvent) {
+      element.detachEvent("on" + type, handler)
+    } else {
+      element["on" + type] = null
+    }
   }
 }
 ```
-#### 时间代理
-// 明天继续写吧
+#### 事件代理
+通过之前的学习，我们知道事件处理程序让HTML与JS交互提供了可能。但是每次给DOM元素添加一个事件函数，那么就会在内存中加入一个对象，对象越多，性能也会有很大的影响。其次必须首先指定所有事件处理程序，这个过程需要很多的DOM访问，会影响整个页面的交互就绪时间。
+举个例子。
+```html
+<ul id = "ul">
+  <li id = "li1">1</li>
+  <li id = "li2">2</li>
+  <li id = "li3">3</li>
+  .....
+<ul>
+<script>
+  let li1 = document.getElementById('li1')
+  let li2 = document.getElementById('li2')
+  let li3 = document.getElementById('li3')
+  eventUtil.addHandler(li1,"click", function(event){
+    console.log(event.target)
+  })
+  eventUtil.addHandler(li2,"click", function(event){
+    console.log(event.target.id)
+  })
+  eventUtil.addHandler(li3,"click", function(event){
+    console.log(event.target.id)
+  })
+</script>
+```
+这种方式无疑很粗暴的，如果有成百上千个li，必然需要很大的代码量，就算采用的遍历的方式，代码量会少，但是遍历和过多的直接操作DOM也是不可取的。
+这个时候需要引入事件代理。
+
+**事件代理（有些人会叫事件委托）：只需要在DOM树中尽量最高的层次添加一个事件处理程序，利用事件冒泡的原理，子元素的事件也可以捕获到**
+
+还是上面的例子，用事件代理的方式实现
+```js
+let ul = document.getElementById("ul")
+eventUtil.addHandler(ul, "click",function(event){
+  event = eventUtil.getEvent(event)
+  let target = eventUtil.getTarget(event)
+  switch (target.id) {
+    case "li1":
+      console.log(target.id)
+      break
+    case "li2":
+      console.log(target.id)
+      break
+    case "li3":
+      console.log(target.id)
+      break 
+  }
+})
+```
+最适合采用事件委托的事件包括click,mousedown,mouseup,keydown,keyup和keypress。
+
+**事件代理的本质还是利用了事件冒泡**
+
+
+
