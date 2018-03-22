@@ -72,3 +72,130 @@ css一只是我很薄弱的一个点，也一直不够重视。最近写一个�
   align-self: auto | flex-start | flex-end | center | baseline | stretch;
 }
 ```
+
+#### 相对定位实现
+
+直接看demo啦
+```html
+    <div class="container">
+        <div class="main">main</div>
+        <div class="left">left</div>
+        <div class="right">right</div>
+    </div>
+```
+
+通过-margin和相对定位实现
+
+```css
+     .container {
+        padding: 0 200px 0 150px;
+        height: 100vh;
+        background-color: green
+    }
+
+    .main {
+        width: 100%;
+        background-color: red;
+        float: left
+    }
+
+    .left {
+        margin-left: -100%;
+        position: relative;
+        right: 150px;
+        width: 150px;
+        background-color: blue;
+        float: left
+    }
+
+    .right {
+        position: relative;
+        margin-left: -200px;
+        left:200px;
+        width: 200px;
+        float: left;        
+        background-color: pink
+    }
+```
+
+#### 双飞翼布局
+圣杯布局和双飞翼布局解决问题的方案在前一半是相同的，也就是三栏全部float浮动，但左右两栏加上负margin让其跟中间栏div并排，以形成三栏布局。不同在于解决 “中间栏div内容不被遮挡”问题的思路不一样。 
+
+html结构有所改变
+```html
+    <div class="container">
+        <div class="main">
+            <div class="content">main</div> 
+        </div>
+        <div class="left">left</div>
+        <div class="right">right</div>
+    </div>
+```
+
+```css
+    .container {
+        height: 100vh;
+        text-align: center;
+        background-color: green
+    }
+
+    .main {
+        width: 100%;
+        height: 100%;
+        background-color: red;
+        float: left
+    }
+
+    .left {
+        margin-left: -100%;
+        height: 100%;
+        width: 150px;
+        background-color: blue;
+        float: left
+    }
+
+    .right {
+        margin-left: -200px;
+        height: 100%;
+        width: 200px;
+        float: left;        
+        background-color: pink
+    }
+```
+css简单了，不需要相对定位了
+
+
+#### flex实现
+```css
+    .container {
+        height: 100vh;
+        display: flex;
+        background-color: green
+    }
+
+    .main {
+        flex: 1;
+        height: 90vh;
+        background-color: red;
+    }
+
+    .left {
+        order: -1;
+        flex: 0 0 20%;
+        height: 90vh;
+        background-color: blue;
+    }
+
+    .right {
+        flex: 0 0 15%;
+        height: 90vh;
+        background-color: pink
+    }
+
+```
+    最简单的啦。。哈哈
+####小节
+
+圣杯布局和双飞翼布局解决问题的方案在前一半是相同的，也就是三栏全部float浮动，但左右两栏加上负margin让其跟中间栏div并排，以形成三栏布局。不同在于解决”中间栏div内容不被遮挡“问题的思路不一样：圣杯布局，为了中间div内容不被遮挡，将中间div设置了左右padding-left和padding-right后，将左右两个div用相对布局position: relative并分别配合right和left属性，以便左右两栏div移动后不遮挡中间div。双飞翼布局，为了中间div内容不被遮挡，直接在中间div内部创建子div用于放置内容，在该子div里用margin-left和margin-right为左右两栏div留出位置。多了1个div，少用大致4个css属性（圣杯布局中间divpadding-left和padding-right这2个属性）。
+
+

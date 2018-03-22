@@ -46,7 +46,7 @@ Dom事件主要分为3个级别，DOM 0 级、DOM2级、DOM3级，但是还有�
 <button id = ‘myBtn’>click</button>
 <script>
   var btn = document.getElementById('myBtn')
-  brn.onclick = function (){
+  btn.onclick = function (){
     console.log('do something', this.id)
   }
 <script>
