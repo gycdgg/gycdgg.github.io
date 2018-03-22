@@ -35,7 +35,7 @@ toc:
   number: false
 
 # Static files
-js: js
+js: jsjs
 css: css
 
 # Date_formats
@@ -104,7 +104,7 @@ about:
   items:
   - label: email
     url: mailto:1165297373@qq.com ## Your email with mailto: e.g.  mailto:zhenggchaoo@gmail.com
-    title: 1165297373@qq.com ## Your email e.g.  zhenggchaoo@gmail.com
+    title: Edmond.Guang@foxmail.com ## Your email e.g.  zhenggchaoo@gmail.com
   - label: github
     url: https://github.com/gycdgg/ ## Your github'url e.g.  https://github.com/chaooo
     title: gycdgg ## Your github'name e.g.  chaooo
