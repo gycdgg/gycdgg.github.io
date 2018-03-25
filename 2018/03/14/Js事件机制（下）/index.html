@@ -1,0 +1,150 @@
+<!DOCTYPE html><html lang="en"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content="A fresh Frontend developer."><meta name="keywords" content="Javascript, React, diary"><title>Js事件机制（下） | Edmond's blog</title><link rel="stylesheet" type="text/css" href="//fonts.neworld.org/css?family=Source+Code+Pro"><link rel="stylesheet" type="text/css" href="/css/style.css?v=2.0.1"><link rel="stylesheet" type="text/css" href="/css/highlight.css?v=2.0.1"><link rel="Shortcut Icon" href="/favicon.ico"><link rel="bookmark" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"><link rel="alternate" type="application/atom+xml" href="/atom.xml"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">Js事件机制（下）</h1><a id="logo" href="/.">Edmond's blog</a><p class="description">share my knowledge on web dev</p></div><div id="nav-menu"><a href="/." class="current"><i class="fa fa-home"> Home</i></a><a href="/archives/"><i class="fa fa-archive"> Archive</i></a><a href="/about/"><i class="fa fa-user"> About</i></a></div><div id="search-form"><div id="result-mask" class="hide"></div><label><input id="search-key" type="text" autocomplete="off" placeholder="Search more"></label><div id="result-wrap" class="hide"><div id="search-result"></div></div><div class="hide"><template id="search-tpl"><div class="item"><a href="/{path}" title="{title}"><div class="title">{title}</div><div class="time">{date}</div><div class="tags">{tags}</div></a></div></template></div></div></div><div id="layout" class="layout-g"><div class="layout-l"><div class="content_container"><div class="post"><h1 class="post-title">Js事件机制（下）</h1><div class="post-meta"><a href="/2018/03/14/Js事件机制（下）/#comments" class="comment-count"></a><p><span class="date">Mar 14, 2018</span><span><a href="/categories/JavaScript/" class="category">JavaScript</a></span><span><i id="busuanzi_container_page_pv"><i id="busuanzi_value_page_pv"></i><i>Hits</i></i></span></p></div><div class="post-content"><p>上文介绍了事件流和事件类型，本文介绍事件对象和事件代理</p>
+<h2 id="事件对象"><a href="#事件对象" class="headerlink" title="事件对象"></a>事件对象</h2><blockquote>
+<p>在触发DOM上的某个事件时，会产生一个事件对象event，这个对象中包括所有与事件有关的信息。</p>
+</blockquote>
+<h4 id="DOM中的事件对象"><a href="#DOM中的事件对象" class="headerlink" title="DOM中的事件对象"></a>DOM中的事件对象</h4><p>兼容DOM的浏览器将一个event对象传入到事件处理程序中。无论指定的事件使用什么方法，DOM 0 级和 DOM 2级，都会传入event对象<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">onclick</span>=<span class="string">"alert(event.type)"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">onclick</span> = <span class="string">"handleClick(event)"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="undefined"></span></span><br><span class="line"><span class="javascript">  <span class="comment">//HTML事件，html中参数必须为event</span></span></span><br><span class="line"><span class="javascript">  <span class="function"><span class="keyword">function</span> <span class="title">handleClick</span>(<span class="params">e</span>)</span>&#123;</span></span><br><span class="line"><span class="javascript">    <span class="built_in">console</span>.log(e.type)</span></span><br><span class="line"><span class="undefined">  &#125;</span></span><br><span class="line"><span class="javascript">  <span class="keyword">let</span> btn = <span class="built_in">document</span>.getElementById(<span class="string">"myBtn"</span>)</span></span><br><span class="line"><span class="javascript">  <span class="comment">// DOM 0 级事件</span></span></span><br><span class="line"><span class="javascript">  btn.onclick = <span class="function"><span class="keyword">function</span>(<span class="params">e</span>)</span>&#123;</span></span><br><span class="line"><span class="javascript">  <span class="built_in">console</span>.log(e.type)</span></span><br><span class="line"><span class="undefined">  &#125;</span></span><br><span class="line"><span class="javascript">  btn.addEventListener(<span class="string">"click"</span>, <span class="function"><span class="keyword">function</span>(<span class="params">e</span>)</span>&#123;</span></span><br><span class="line"><span class="javascript">    <span class="built_in">console</span>.log(e.type)</span></span><br><span class="line"><span class="javascript">  &#125;,<span class="literal">false</span>)</span></span><br><span class="line"><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>HTML原生事件，DOM 0 级事件，DOM 2 级事件都可以获取到event对象。<br>Event对象成员</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">属性/方法</th>
+<th style="text-align:center">类型</th>
+<th style="text-align:center">读/写</th>
+<th style="text-align:center">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">bubbles</td>
+<td style="text-align:center">Boolean</td>
+<td style="text-align:center">只读</td>
+<td style="text-align:center">表明事件是否冒泡</td>
+</tr>
+<tr>
+<td style="text-align:center">cancelable</td>
+<td style="text-align:center">boolean</td>
+<td style="text-align:center">只读</td>
+<td style="text-align:center">表明是否可以取消事件的默认行为</td>
+</tr>
+<tr>
+<td style="text-align:center">currentTarget</td>
+<td style="text-align:center">Element</td>
+<td style="text-align:center">只读</td>
+<td style="text-align:center">表明事件处理程序当前处理的那个程序</td>
+</tr>
+<tr>
+<td style="text-align:center">defaultPrevented</td>
+<td style="text-align:center">boolean</td>
+<td style="text-align:center">只读</td>
+<td style="text-align:center">为true表示事件已经调用过preventDefault</td>
+</tr>
+<tr>
+<td style="text-align:center">details</td>
+<td style="text-align:center">Interger</td>
+<td style="text-align:center">只读</td>
+<td style="text-align:center">与事件相关的细节信息</td>
+</tr>
+<tr>
+<td style="text-align:center">eventPhrase</td>
+<td style="text-align:center">Interger</td>
+<td style="text-align:center">只读</td>
+<td style="text-align:center">调用事件处理程序的阶段，1表示捕获，2表示目标阶段，3表示冒泡</td>
+</tr>
+<tr>
+<td style="text-align:center">preventDefault()</td>
+<td style="text-align:center">Function</td>
+<td style="text-align:center">只读</td>
+<td style="text-align:center">取消事件的默认行为</td>
+</tr>
+<tr>
+<td style="text-align:center">stopImmediatePropagation()</td>
+<td style="text-align:center">Function</td>
+<td style="text-align:center">只读</td>
+<td style="text-align:center">取消事件的进一步冒泡，同时阻止任何事件处理程序被调用</td>
+</tr>
+<tr>
+<td style="text-align:center">stopPropagation()</td>
+<td style="text-align:center">Function</td>
+<td style="text-align:center">只读</td>
+<td style="text-align:center">取消事件的进一步冒泡</td>
+</tr>
+<tr>
+<td style="text-align:center">target</td>
+<td style="text-align:center">Element</td>
+<td style="text-align:center">只读</td>
+<td style="text-align:center">事件的目标DOM</td>
+</tr>
+<tr>
+<td style="text-align:center">trusted</td>
+<td style="text-align:center">Boolean</td>
+<td style="text-align:center">只读</td>
+<td style="text-align:center">true表示是浏览器生成的</td>
+</tr>
+<tr>
+<td style="text-align:center">type</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">只读</td>
+<td style="text-align:center">被触发的事件类型</td>
+</tr>
+<tr>
+<td style="text-align:center">view</td>
+<td style="text-align:center">AbstractView</td>
+<td style="text-align:center">只读</td>
+<td style="text-align:center">与事件关联的抽象视图</td>
+</tr>
+</tbody>
+</table>
+<p><strong>只有在事件处理程序执行期间，event对象才会存在， 执行完会销毁</strong></p>
+<h4 id="IE中的事件对象"><a href="#IE中的事件对象" class="headerlink" title="IE中的事件对象"></a>IE中的事件对象</h4><p>在使用DOM 0 级方法添加事件处理函数时，event对象作为window对象的一个属性存在。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"> btn.onclick = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="keyword">var</span> event = <span class="built_in">window</span>.event;</span><br><span class="line">  <span class="built_in">console</span>.log(event.type) <span class="comment">//"click"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>如果用atttchEvent添加的，那么就会有一个event对象作为参数传入事件处理函数中<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">btn.attachEvent(<span class="string">"onclick"</span>, <span class="function"><span class="keyword">function</span>(<span class="params">event</span>)</span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(event.type)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></p>
+<p>IE的event对象同样也包含于创建他的事件相关的属性和方法。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">属性/方法</th>
+<th style="text-align:center">类型</th>
+<th style="text-align:center">读/写</th>
+<th style="text-align:center">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">cancelBubble</td>
+<td style="text-align:center">Boolean</td>
+<td style="text-align:center">读/写</td>
+<td style="text-align:center">default value 为 false，当设置为true时等同于DOM中的stopPropagation()</td>
+</tr>
+<tr>
+<td style="text-align:center">returnValue</td>
+<td style="text-align:center">boolean</td>
+<td style="text-align:center">读/写</td>
+<td style="text-align:center">default value 为 true，当设置为false时等同于DOM中的preventDefault</td>
+</tr>
+<tr>
+<td style="text-align:center">srcElement</td>
+<td style="text-align:center">Element</td>
+<td style="text-align:center">只读</td>
+<td style="text-align:center">与DOM事件中的target相同</td>
+</tr>
+<tr>
+<td style="text-align:center">type</td>
+<td style="text-align:center">boolean</td>
+<td style="text-align:center">只读</td>
+<td style="text-align:center">被触发的事件类型</td>
+</tr>
+</tbody>
+</table>
+<h4 id="跨浏览器的事件对象"><a href="#跨浏览器的事件对象" class="headerlink" title="跨浏览器的事件对象"></a>跨浏览器的事件对象</h4><p>虽然DOM和IE的event对象不同，但是基于他们之间的相似性依然可以拿出跨浏览器的方案来。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> eventUtil = &#123;</span><br><span class="line">  addHandler: <span class="function"><span class="keyword">function</span>(<span class="params">element,type,handler</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (element.addEventListener) &#123;</span><br><span class="line">      element.addEventListener(type,handler,<span class="literal">false</span>)</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span>(event.attachEvent) &#123;</span><br><span class="line">      element.attachEvent(<span class="string">"on"</span> + type, handler)</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      element[<span class="string">"on"</span> + type] = handler</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  getEvent: <span class="function"><span class="keyword">function</span> (<span class="params">event</span>) </span>&#123;</span><br><span class="line">     <span class="keyword">return</span> event || <span class="built_in">window</span>.event</span><br><span class="line">  &#125;,</span><br><span class="line">  getTarget: <span class="function"><span class="keyword">function</span> (<span class="params">event</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> event.target || event.srcElement</span><br><span class="line">  &#125;,</span><br><span class="line">  stopProparation: <span class="function"><span class="keyword">function</span> (<span class="params">event</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(event.stopPropagation) &#123;</span><br><span class="line">      event.stopPropagation()</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      event.cancelBubble = <span class="literal">true</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  preventDefault: <span class="function"><span class="keyword">function</span> (<span class="params">event</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (event.preventDefault)</span><br><span class="line">    &#123;</span><br><span class="line">      event.preventDefault()</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      event.returnValue = <span class="literal">false</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  removeHandle: <span class="function"><span class="keyword">function</span> (<span class="params">event</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (element.removeEventListener) &#123;</span><br><span class="line">      element.removeEventListener(type,handler,<span class="literal">false</span>)</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span>(event.detachEvent) &#123;</span><br><span class="line">      element.detachEvent(<span class="string">"on"</span> + type, handler)</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      element[<span class="string">"on"</span> + type] = <span class="literal">null</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h4 id="事件代理"><a href="#事件代理" class="headerlink" title="事件代理"></a>事件代理</h4><p>通过之前的学习，我们知道事件处理程序让HTML与JS交互提供了可能。但是每次给DOM元素添加一个事件函数，那么就会在内存中加入一个对象，对象越多，性能也会有很大的影响。其次必须首先指定所有事件处理程序，这个过程需要很多的DOM访问，会影响整个页面的交互就绪时间。<br>举个例子。<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">ul</span> <span class="attr">id</span> = <span class="string">"ul"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">li</span> <span class="attr">id</span> = <span class="string">"li1"</span>&gt;</span>1<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">li</span> <span class="attr">id</span> = <span class="string">"li2"</span>&gt;</span>2<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">li</span> <span class="attr">id</span> = <span class="string">"li3"</span>&gt;</span>3<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">  .....</span><br><span class="line"><span class="tag">&lt;<span class="name">ul</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="undefined"></span></span><br><span class="line"><span class="javascript">  <span class="keyword">let</span> li1 = <span class="built_in">document</span>.getElementById(<span class="string">'li1'</span>)</span></span><br><span class="line"><span class="javascript">  <span class="keyword">let</span> li2 = <span class="built_in">document</span>.getElementById(<span class="string">'li2'</span>)</span></span><br><span class="line"><span class="javascript">  <span class="keyword">let</span> li3 = <span class="built_in">document</span>.getElementById(<span class="string">'li3'</span>)</span></span><br><span class="line"><span class="javascript">  eventUtil.addHandler(li1,<span class="string">"click"</span>, <span class="function"><span class="keyword">function</span>(<span class="params">event</span>)</span>&#123;</span></span><br><span class="line"><span class="javascript">    <span class="built_in">console</span>.log(event.target)</span></span><br><span class="line"><span class="undefined">  &#125;)</span></span><br><span class="line"><span class="javascript">  eventUtil.addHandler(li2,<span class="string">"click"</span>, <span class="function"><span class="keyword">function</span>(<span class="params">event</span>)</span>&#123;</span></span><br><span class="line"><span class="javascript">    <span class="built_in">console</span>.log(event.target.id)</span></span><br><span class="line"><span class="undefined">  &#125;)</span></span><br><span class="line"><span class="javascript">  eventUtil.addHandler(li3,<span class="string">"click"</span>, <span class="function"><span class="keyword">function</span>(<span class="params">event</span>)</span>&#123;</span></span><br><span class="line"><span class="javascript">    <span class="built_in">console</span>.log(event.target.id)</span></span><br><span class="line"><span class="undefined">  &#125;)</span></span><br><span class="line"><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>这种方式无疑很粗暴的，如果有成百上千个li，必然需要很大的代码量，就算采用的遍历的方式，代码量会少，但是遍历和过多的直接操作DOM也是不可取的。<br>这个时候需要引入事件代理。</p>
+<p><strong>事件代理（有些人会叫事件委托）：只需要在DOM树中尽量最高的层次添加一个事件处理程序，利用事件冒泡的原理，子元素的事件也可以捕获到</strong></p>
+<p>还是上面的例子，用事件代理的方式实现<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> ul = <span class="built_in">document</span>.getElementById(<span class="string">"ul"</span>)</span><br><span class="line">eventUtil.addHandler(ul, <span class="string">"click"</span>,<span class="function"><span class="keyword">function</span>(<span class="params">event</span>)</span>&#123;</span><br><span class="line">  event = eventUtil.getEvent(event)</span><br><span class="line">  <span class="keyword">let</span> target = eventUtil.getTarget(event)</span><br><span class="line">  <span class="keyword">switch</span> (target.id) &#123;</span><br><span class="line">    <span class="keyword">case</span> <span class="string">"li1"</span>:</span><br><span class="line">      <span class="built_in">console</span>.log(target.id)</span><br><span class="line">      <span class="keyword">break</span></span><br><span class="line">    <span class="keyword">case</span> <span class="string">"li2"</span>:</span><br><span class="line">      <span class="built_in">console</span>.log(target.id)</span><br><span class="line">      <span class="keyword">break</span></span><br><span class="line">    <span class="keyword">case</span> <span class="string">"li3"</span>:</span><br><span class="line">      <span class="built_in">console</span>.log(target.id)</span><br><span class="line">      <span class="keyword">break</span> </span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></p>
+<p>最适合采用事件委托的事件包括click,mousedown,mouseup,keydown,keyup和keypress。</p>
+<p><strong>事件代理的本质还是利用了事件冒泡</strong></p>
+</div><div class="tags"><a href="/tags/Javascript事件/">Javascript事件</a></div><div class="post-share"></div><div class="post-nav"><a href="/2018/03/21/css之圣杯布局/" class="pre">css之圣杯布局</a><a href="/2018/03/13/2017年小结/" class="next">2017年小结</a></div><div id="comments"></div></div></div></div><div class="layout-r"><div id="sidebar"><div class="search-pla"></div><div id="toc" class="widget"><div class="widget-title"><i class="fa fa-fei">Contents</i></div><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#事件对象"><span class="toc-text">事件对象</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#DOM中的事件对象"><span class="toc-text">DOM中的事件对象</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#IE中的事件对象"><span class="toc-text">IE中的事件对象</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#跨浏览器的事件对象"><span class="toc-text">跨浏览器的事件对象</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#事件代理"><span class="toc-text">事件代理</span></a></li></ol></li></ol></li></ol></div><div class="widget"><div class="widget-title"><i class="fa fa-xie"> Recent</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2018/03/21/css之圣杯布局/">css之圣杯布局</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/03/14/Js事件机制（下）/">Js事件机制（下）</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/03/13/2017年小结/">2017年小结</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/03/13/javascript权威指南-第三章（类型）/">javascript权威指南-第三章（类型）</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/03/13/javascript权威指南-第二十章（客户端存储）/">javascript权威指南-第二十章（客户端存储）</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/03/13/es6之let/">es6之let</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/03/13/Js事件机制（上）/">Js事件机制（上）</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-gui"> Categories</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/CSS/">CSS</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Diary/">Diary</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/读书笔记/">读书笔记</a><span class="category-list-count">3</span></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-biao"> Tags</i></div><div class="tagcloud"><a href="/tags/随便写写/" style="font-size: 15px;">随便写写</a> <a href="/tags/Javascript事件/" style="font-size: 15px;">Javascript事件</a> <a href="/tags/读书笔记/" style="font-size: 15px;">读书笔记</a> <a href="/tags/页面布局/" style="font-size: 15px;">页面布局</a> <a href="/tags/es6/" style="font-size: 15px;">es6</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-archive"> Archive</i></div><ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-you"> Blogroll</i></div><ul></ul><a href="http://www.example1.com/" title="site-name1" target="_blank">site-name1</a><ul></ul><a href="http://www.example2.com/" title="site-name2" target="_blank">site-name2</a><ul></ul><a href="http://www.example3.com/" title="site-name3" target="_blank">site-name3</a></div></div></div></div><a id="totop" href="#top"></a><div id="footer"><div class="footer-info"><p></p><p><span> Copyright &copy;<a href="/." rel="nofollow">Edmond Guan.</a></span></p></div></div></div><script src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js" async></script><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?1006843030519956000";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+  })();</script><script type="text/javascript" src="/js/switchTab.js?v=2.0.1" async></script><script type="text/javascript" src="/js/search.json.js?v=2.0.1"></script><script type="text/javascript" src="/js/toctotop.js?v=2.0.1" async></script></body></html>
