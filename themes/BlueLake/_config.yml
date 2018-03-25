@@ -35,7 +35,7 @@ toc:
   number: false
 
 # Static files
-js: jsjs
+js: js
 css: css
 
 # Date_formats
