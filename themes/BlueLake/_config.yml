@@ -20,6 +20,15 @@ menu:
   #   directory: atom.xml
   #   icon: fa-rss
 
+# backgrount svg
+background_svg: 
+  display: true
+  color: "0,255,153"
+  opacity: 1
+  zIndex: -2
+  count: 99
+
+
 # Sidebar
 widgets:
   - recent_posts

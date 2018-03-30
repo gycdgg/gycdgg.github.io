@@ -21,7 +21,8 @@ if theme.baidu_analytics
 script(type='text/javascript', src=url_for(theme.js) + '/switchTab.js' + '?v=' + theme.version, async)
 if theme.local_search == true
   script(type='text/javascript', src=url_for(theme.js) + '/search.json.js' + '?v=' + theme.version)
-
+if theme.background_svg.display
+  script(src=url_for(theme.js) + '/nest.js' + '?v=' + theme.version,type="text/javascript",color=theme.background_svg.color , opacity=theme.background_svg.opacity, zIndex=theme.background_svg.zIndex, count=theme.background_svg.count,data-tag="nest" async)
 //- if theme.tinysou
 //-   script.
 //-     var option = {
