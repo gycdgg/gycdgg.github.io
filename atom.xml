@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2018-04-01T04:51:52.701Z</updated>
+  <updated>2018-04-22T14:51:52.511Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,32 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>字符串加法与全排列问题</title>
+    <link href="http://yoursite.com/2018/04/22/%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%8A%A0%E6%B3%95%E4%B8%8E%E5%85%A8%E6%8E%92%E5%88%97%E9%97%AE%E9%A2%98/"/>
+    <id>http://yoursite.com/2018/04/22/字符串加法与全排列问题/</id>
+    <published>2018-04-22T14:33:18.000Z</published>
+    <updated>2018-04-22T14:51:52.511Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>依旧来源于codewar的5星题，现在刷codewar，4星题还是蛮吃力的，5星题正好，能锻炼自己也不太吃力。</p><h3 id="字符串全排列"><a href="#字符串全排列" class="headerlink" title="字符串全排列"></a>字符串全排列</h3><ul><li>字符串全排列，以数组的形式输出</li></ul><h4 id="solution1-递归-插入"><a href="#solution1-递归-插入" class="headerlink" title="solution1 递归 + 插入"></a>solution1 递归 + 插入</h4><blockquote><p>假如要得到字符串为“abcd”的全排列数组permutation(‘abcd’)，bcd的全排列结果为permutation(‘bcd’)，这个结果是一个数组[‘bcd’,’bdc’,’cbd’,’cdb’,’dbc’,’dcb’]，map这个数组，将a插入到每个字符串的每个位置，就是permutation(‘abcd’)</p></blockquote><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sort</span>(<span class="params">str</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(str.length &lt;= <span class="number">1</span>) <span class="keyword">return</span> [str]</span><br><span class="line">    <span class="keyword">let</span> left = str[<span class="number">0</span>]</span><br><span class="line">    <span class="keyword">let</span> arr = []</span><br><span class="line">    <span class="keyword">let</span> rest = str.substr(<span class="number">1</span>)</span><br><span class="line">    <span class="keyword">let</span> strArr = sort(rest)</span><br><span class="line">    strArr.forEach(<span class="function"><span class="params">v</span>=&gt;</span>&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">let</span> j = <span class="number">0</span>; j &lt;= v.length; j++)&#123;</span><br><span class="line">            <span class="keyword">let</span> _str = v.slice(<span class="number">0</span>,j) + left + v.slice(j)</span><br><span class="line">            arr.push(_str)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;)</span><br><span class="line">    <span class="keyword">return</span> arr</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h2 id="未完待续。。。"><a href="#未完待续。。。" class="headerlink" title="未完待续。。。"></a>未完待续。。。</h2>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h2 id=&quot;概述&quot;&gt;&lt;a href=&quot;#概述&quot; class=&quot;headerlink&quot; title=&quot;概述&quot;&gt;&lt;/a&gt;概述&lt;/h2&gt;&lt;p&gt;依旧来源于codewar的5星题，现在刷codewar，4星题还是蛮吃力的，5星题正好，能锻炼自己也不太吃力。&lt;/p&gt;
+&lt;h3 id=&quot;字符
+      
+    
+    </summary>
+    
+      <category term="JavaScript" scheme="http://yoursite.com/categories/JavaScript/"/>
+    
+    
+      <category term="算法" scheme="http://yoursite.com/tags/%E7%AE%97%E6%B3%95/"/>
+    
+  </entry>
   
   <entry>
     <title>你不知道的Javascript上卷——中</title>
