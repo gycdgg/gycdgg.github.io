@@ -109,3 +109,47 @@ obj.a // 4
 ```
 
 ## 原型
+
+### 类函数
+
+```js
+function Foo(){
+    this.a = 1
+}
+
+let a = new Foo()
+a.__proto__ === Foo.prototype // true
+```
+首先必须明白几个概念 **Foo的原型**： Foo.prototype.
+回顾一下new操作符干了什么
+1. 新建一个对象
+2. this指向
+3. 建立prototype连接：将新建对象的[[prototype]]指向 Foo.prototype
+4. 返回新对象
+
+Javascript的原型继承可以并不会复制对象属性，只是会在2个对象之间建立关联，这样一个对象就可以**委托**访问另一个对象的属性和方法。
+
+### 原型继承
+```js
+function Foo(name){
+	this.name = name
+}
+
+Foo.prototype.getName = function(){
+	return this.name
+}
+
+function Bar(name,age){
+	Foo.call(this, name)
+	this.age = age
+}
+
+Bar.prototype = Object.create(Foo.prototype)
+
+Bar.prototype.getAge = function(){
+	return this.age
+}
+
+let bar = new Bar('edguan', 25)
+```
+Object.create会创建一个新对象，并将新对象的[[prototype]]关联到指定的对象。
