@@ -168,6 +168,43 @@ eventUtil.addHandler(ul, "click",function(event){
 })
 ```
 最适合采用事件委托的事件包括click,mousedown,mouseup,keydown,keyup和keypress。
+封装一下事件代理 delegate
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <ul id = 'test' style="height:200px; background:red">
+    <li>123</li>
+    <li>456</li>
+    <li>789</li>
+  </ul>
+</body>
+<script>
+  let ul = document.getElementById('test')
+
+  function delegate(parent,type,selector,fn){
+    function handle(e){
+      let _e = window.e || e
+      let target = _e.target || _e.srcElement
+      if(target.id === selector || target.nodeName.toLowerCase() === selector){
+        fn(_e)
+      }
+    }
+    parent[type] = handle
+  }
+  delegate(ul,'onclick','li',function(e){
+    e.target.innerHTML = e.target.innerHTML.split('').reverse().join('')
+  })
+</script>
+</html>
+
+```
 
 **事件代理的本质还是利用了事件冒泡**
 
