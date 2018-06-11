@@ -139,7 +139,10 @@ html结构有所改变
         text-align: center;
         background-color: green
     }
-
+    .content {
+        height:100%;
+        margin: 0 200px 0 150px;
+    }
     .main {
         width: 100%;
         height: 100%;
