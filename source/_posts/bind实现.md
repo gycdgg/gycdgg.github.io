@@ -75,3 +75,4 @@ Function.prototype._bind = function(){
 test._bind(obj1,1000,1)(10000) // [111,1000,1]
 ```
 ## 未完待续
+111111
