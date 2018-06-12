@@ -245,26 +245,6 @@
     
     
   <url>
-    <loc>http://yoursite.com/2018/03/13/es6%E4%B9%8Blet/</loc>
-    <lastmod>2018-03-24T05:54:23.643Z</lastmod>
-    <data>
-        <display>
-        <title>es6之let</title>
-        <pubTime>2018-03-13T07:26:31.000Z</pubTime>
-        
-        <tag>es6</tag>
-         
-         
-           
-             
-              <breadCrumb title="读书笔记" url="http://yoursite.com/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://yoursite.com/2018/03/13/javascript%E6%9D%83%E5%A8%81%E6%8C%87%E5%8D%97-%E7%AC%AC%E4%BA%8C%E5%8D%81%E7%AB%A0%EF%BC%88%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%AD%98%E5%82%A8%EF%BC%89/</loc>
     <lastmod>2018-03-24T05:54:23.643Z</lastmod>
     <data>
@@ -293,6 +273,26 @@
         <pubTime>2018-03-13T07:29:36.000Z</pubTime>
         
         <tag>读书笔记</tag>
+         
+         
+           
+             
+              <breadCrumb title="读书笔记" url="http://yoursite.com/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://yoursite.com/2018/03/13/es6%E4%B9%8Blet/</loc>
+    <lastmod>2018-03-24T05:54:23.643Z</lastmod>
+    <data>
+        <display>
+        <title>es6之let</title>
+        <pubTime>2018-03-13T07:26:31.000Z</pubTime>
+        
+        <tag>es6</tag>
          
          
            
