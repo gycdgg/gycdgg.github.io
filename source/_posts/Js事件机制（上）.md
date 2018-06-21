@@ -14,7 +14,7 @@ JS和HTML的交互是通过事件来实现的。事件就是文档中发生的�
 
 ![image](http://upload-images.jianshu.io/upload_images/7821791-664099d3b7629a47..jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 #### 事件冒泡
-IE的事件流流叫事件冒泡（event bubbling）
+IE的事件流叫事件冒泡（event bubbling）
 所有的现代浏览器都是支持事件冒泡，但是具体实现上有一点区别。
 *IE5.5及其更早的版本会跳过html直接到document*
 
@@ -24,7 +24,7 @@ netscape 团队提出的另一种事件流叫事件捕获。事件捕获的思�
 #### DOM事件流
 > IE9、Opera、Firefox、Chrome、Safari都是支持DOM事件流的。**IE8及更早的版本不支持**
 
-DOM 2级事件规定事件流包括3个阶段，事件捕获阶段、处于目标阶段、事件冒泡阶段。
+DOM2级事件规定事件流包括3个阶段，事件捕获阶段、处于目标阶段、事件冒泡阶段。
 首先发生的事件捕获，为截取事件提供了机会。然后是实际的目标接受事件，最后一个阶段是冒泡阶段。
 ## DOM事件级别
 Dom事件主要分为3个级别，DOM 0 级、DOM2级、DOM3级，但是还有一个HTML事件，直接内嵌在HTML里面的。
@@ -43,7 +43,7 @@ Dom事件主要分为3个级别，DOM 0 级、DOM2级、DOM3级，但是还有�
 
 #### DOM 0 级事件
 ```html
-<button id = ‘myBtn’>click</button>
+<button id = 'myBtn'>click</button>
 <script>
   var btn = document.getElementById('myBtn')
   btn.onclick = function (){
@@ -51,7 +51,7 @@ Dom事件主要分为3个级别，DOM 0 级、DOM2级、DOM3级，但是还有�
   }
 <script>
 ```
-DOM 0 级事件是将一个函数赋给一个dom对象的处理函数属性。
+DOM0级事件是将一个函数赋给一个dom对象的处理函数属性。
 可以通过给事件处理属性赋值null来解绑事件。
 这个demo中就是讲函数赋给了btn的onclick属性
 通过以下的demo可以看出来，**DOM 0 级事件的处理程序会在冒泡阶段被处理。**

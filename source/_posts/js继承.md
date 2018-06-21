@@ -112,7 +112,7 @@ const create = (o) = > {
 	return new Func()
 }
 ```
-**但是Obect.create可以接收第二个参数，但是不常用**
+**但是Object.create可以接收第二个参数，但是不常用**
 
 ```js
 function Parent(name){
