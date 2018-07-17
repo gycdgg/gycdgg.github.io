@@ -27,3 +27,10 @@ vw, vh, vmin, vmax：IE9+局部支持，chrome/firefox/safari/opera支持，iOS 
 
 ### 水平居中
 
+#### 固定宽度块级元素水平居中
+
+```css
+width:200px;
+margin:0 auto
+```
+
