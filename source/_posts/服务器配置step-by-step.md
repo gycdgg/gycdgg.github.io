@@ -61,6 +61,5 @@ npm -v => 5.6.01. quite
 > grant all privileges on *.* to root@'%' identified by 'test';
 > flush provileges.
 
-
-
-#### node 环境相关
+> alter database chat character set utf8 collate utf8_general_ci
+> alter table message convert to character set utf8 collate u.NODEtf8_general_ci
